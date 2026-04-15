@@ -77,7 +77,10 @@
     <button class="nav-item" onclick="scrollToSection('up-next-sec')"><i class="fas fa-video"></i><span>Next</span></button>
     <button class="nav-item" onclick="scrollToSection('rec-sec')"><i class="fas fa-fire"></i><span>Hot</span></button>
     <button class="nav-item" onclick="scrollToSection('hist-sec')"><i class="fas fa-rectangle-list"></i><span>History</span></button>
-    <button class="nav-item" onclick="window.open(document.getElementById('download-link').href, '_blank')"><i class="fas fa-download"></i><span>Download</span></button>
+   <button class="nav-item" onclick="triggerCustomDownload(event)">
+    <i class="fas fa-download"></i><span>Download</span>
+</button>
+
     <button class="nav-item" onclick="document.getElementById('file-upload').click()"><i class="fas fa-folder"></i><span>Local</span></button>
     <input type="file" id="file-upload" style="display: none;" accept="video/*" onchange="handleLocalVideo(event)">
     <a id="download-link" href="#" target="_blank" style="display:none;"></a>
@@ -85,3 +88,7 @@
 <script src="ticktube.js"></script>
 </body>
 </html>
+
+
+
+

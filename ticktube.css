@@ -81,3 +81,7 @@
     .btn-float-back { position: sticky; top: 10px; right: 10px; z-index: 5100; float: right; background: #ff4d4d; color: white; border: none; padding: 8px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     footer { padding: 40px 20px; text-align: center; border-top: 1px solid #1e293b; margin-bottom: 80px; }
         .footer-link { color: var(--primary); text-decoration: none; font-size: 13px; font-weight: bold; }
+
+@keyframes download-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.nav-item.downloading i { animation: download-spin 1s linear infinite; color: #00FFCC; }
+@keyframes modalFadeIn { from { opacity: 0; transform: translate(-50%, -60%); } to { opacity: 1; transform: translate(-50%, -50%); } }
