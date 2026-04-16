@@ -1,14 +1,16 @@
-package com.Davidliams12.Ticktube // Ensure this matches your project package name
+package com.davidliams12.ticktube
 
 import android.Manifest
 import android.content.ContentUris
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,36 +23,44 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // 1. Initialize WebView
+
+        // 1. Create and Configure the WebView
         myWebView = WebView(this)
+        myWebView.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            allowFileAccess = true
+            allowContentAccess = true
+        }
+        
+        myWebView.webViewClient = WebViewClient()
         setContentView(myWebView)
 
-        // 2. Configure WebView Settings
-        myWebView.settings.javaScriptEnabled = true
-        myWebView.settings.domStorageEnabled = true
-        myWebView.settings.allowFileAccess = true
-        myWebView.webViewClient = WebViewClient()
-
-        // 3. Add the Bridge (Connects Kotlin to your ticktube.js)
+        // 2. Attach the Bridge (AndroidInterface)
         myWebView.addJavascriptInterface(WebAppInterface(this), "AndroidInterface")
 
-        // 4. Load your GitHub URL or local assets
-        myWebView.loadUrl("https://yourusername.github.io/TickTube/") 
+        // 3. Load your TickTube Website
+        myWebView.loadUrl("https://davidliams12.github.io/TickTube/")
 
-        // 5. Check Permissions for Video Access
-        checkVideoPermissions()
+        // 4. Ask for Storage Permissions immediately
+        requestStoragePermissions()
     }
 
-    private fun checkVideoPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 101)
+    private fun requestStoragePermissions() {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            Manifest.permission.READ_MEDIA_VIDEO
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), 100)
         }
     }
 
-    // --- The Core Video Fetching Logic ---
-    fun fetchAllOfflineVideos(): String {
-        val videoList = JSONArray()
+    // --- The Logic to Scan Storage ---
+    fun fetchAllVideos(): String {
+        val jsonArray = JSONArray()
         val projection = arrayOf(
             MediaStore.Video.Media._ID,
             MediaStore.Video.Media.DISPLAY_NAME
@@ -62,28 +72,33 @@ class MainActivity : AppCompatActivity() {
         )
 
         query?.use { cursor ->
-            val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
-            val nameColumn = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+            val idCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+            val nameCol = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
 
             while (cursor.moveToNext()) {
-                val id = cursor.getLong(idColumn)
-                val name = cursor.getString(nameColumn)
+                val id = cursor.getLong(idCol)
+                val name = cursor.getString(nameCol)
                 val uri = ContentUris.withAppendedId(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, id).toString()
 
-                val videoJson = JSONObject()
-                videoJson.put("name", name)
-                videoJson.put("uri", uri)
-                videoList.put(videoJson)
+                val videoObj = JSONObject()
+                videoObj.put("name", name)
+                videoObj.put("uri", uri)
+                jsonArray.put(videoObj)
             }
         }
-        return videoList.toString()
+        return jsonArray.toString()
     }
 
-    // --- The JavaScript Bridge Class ---
-    inner class WebAppInterface(private val mContext: Context) {
+    // --- JavaScript Bridge ---
+    inner class WebAppInterface(private val context: Context) {
         @JavascriptInterface
         fun getOfflineVideos(): String {
-            return fetchAllOfflineVideos()
+            return fetchAllVideos()
+        }
+        
+        @JavascriptInterface
+        fun showToast(message: String) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
 }
