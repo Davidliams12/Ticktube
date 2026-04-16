@@ -85,3 +85,90 @@
 @keyframes download-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .nav-item.downloading i { animation: download-spin 1s linear infinite; color: #00FFCC; }
 @keyframes modalFadeIn { from { opacity: 0; transform: translate(-50%, -60%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
+/* --- Mobile-First Layout --- */
+.layout-grid {
+    display: flex;
+    flex-direction: column; /* Stack vertically on phones */
+    gap: 15px;
+    padding: 10px;
+}
+
+.video-card {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px; /* Slightly smaller radius for small screens */
+    position: sticky; /* Keeps video visible while scrolling on small phones */
+    top: 60px;
+    z-index: 100;
+}
+
+/* --- itel A56 & Small Devices (Width < 600px) --- */
+@media screen and (max-width: 600px) {
+    header {
+        padding: 10px;
+    }
+    
+    #status-text {
+        font-size: 10px; /* Smaller text for narrow screens */
+    }
+
+    .search-container {
+        border-radius: 8px;
+    }
+
+    .btn-search {
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    /* Make text readable on small screens */
+    #now-playing-title {
+        font-size: 0.9rem;
+        padding: 0 5px;
+        line-height: 1.3;
+    }
+
+    /* Adjust the mini-items for better thumb-scrolling */
+    .mini-item {
+        gap: 8px;
+    }
+    
+    .mini-item img {
+        width: 120px; /* Larger images are easier to tap on itel phones */
+    }
+
+    .mini-item h5 {
+        font-size: 12px;
+        white-space: normal; /* Wrap text so titles aren't cut off */
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Bottom Nav adjustment for small screens */
+    .bottom-nav {
+        height: 65px;
+    }
+    
+    .nav-item i {
+        font-size: 18px;
+    }
+    
+    .nav-item span {
+        font-size: 9px;
+    }
+}
+
+/* --- Landscape Mode for itel A56 --- */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    .video-card {
+        height: 80vh; /* Takes up most of the screen in landscape */
+    }
+    .bottom-nav {
+        display: none; /* Hide nav in landscape to save space for video */
+    }
+                   }
+                     
+
