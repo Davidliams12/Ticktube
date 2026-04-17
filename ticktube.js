@@ -268,15 +268,3 @@ document.head.appendChild(tag);
 
 
 
-function optimizeForSmallScreens() {
-    if (window.innerWidth < 480) {
-        // Reduce shadow intensity to save GPU/Battery
-        document.body.style.setProperty('--primary', '#00f2ff'); 
-        console.log("TickTube optimized for mobile performance.");
-    }
-}
-
-// Call this inside your window.onload
-window.addEventListener('resize', optimizeForSmallScreens);
-optimizeForSmallScreens();
-        
