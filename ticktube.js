@@ -2,11 +2,7 @@
  * TickTube Smart Player - Core Logic
  * Developed by Dr David
  */
-// Instead of typing the long key here...
-// Use the variable from keys.js
-fetch(`https://api.example.com/data?key=${MY_SECRET_KEY}`)
-  .then(response => response.json())
-  .then(data => console.log(data));
+fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=coding&key=${MY_SECRET_KEY}`)
 
 
 
