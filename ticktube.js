@@ -2,8 +2,14 @@
  * TickTube Smart Player - Core Logic
  * Developed by Dr David
  */
+// Instead of typing the long key here...
+// Use the variable from keys.js
+fetch(`https://api.example.com/data?key=${MY_SECRET_KEY}`)
+  .then(response => response.json())
+  .then(data => console.log(data));
 
-const API_KEY = "AIzaSyAY-llYbjBiY3VtfCGsqo4jC3SkALKTGwc";
+
+
 let ytPlayer, upNextQueue = [];
 let pipClosedManually = false;
 
