@@ -4,7 +4,7 @@
  */
 fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=coding&key=${MY_SECRET_KEY}`)
 
-
+const API_KEY ="AIzaSyDgTIkMt4kHcQwlNSeHNxvMQLlmJg0ZEAI";
 
 let ytPlayer, upNextQueue = [];
 let pipClosedManually = false;
