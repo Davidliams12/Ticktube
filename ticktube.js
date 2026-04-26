@@ -2,7 +2,6 @@
  * TickTube Smart Player - Core Logic
  * Developed by Dr David
  */
-fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=coding&key=${MY_SECRET_KEY}`)
 
 const API_KEY ="AIzaSyDgTIkMt4kHcQwlNSeHNxvMQLlmJg0ZEAI";
 
