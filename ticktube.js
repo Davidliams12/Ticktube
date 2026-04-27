@@ -3,8 +3,7 @@
  * Developed by Dr David
  */
 
-const API_KEY ="AIzaSyDgTIkMt4kHcQwlNSeHNxvMQLlmJg0ZEAI";
-
+const API_KEY ="AIzaSyAjO4XGMz2H1EjNjv-_69xGdxl80TxVOFY";
 let ytPlayer, upNextQueue = [];
 let pipClosedManually = false;
 
